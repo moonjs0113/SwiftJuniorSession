@@ -15,6 +15,9 @@
 ---
 ## Structure
 ### Value Type
+``` Swift
+
+```
 ![ValueTypeImage](https://95735008-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F-M7Zt2HBfR67oi6QnKHI%2Fuploads%2Fgit-blob-d4f5e45eb1d6b8550e783535d297c311e9e41b88%2F09_sharedStateStruct_2x.png?alt=media)
 
 ### 정의
@@ -41,6 +44,9 @@
 ---
 ## Class
 ### Reference Type
+``` Swift
+
+```
 ![ReferenceTypeImage](https://95735008-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F-M7Zt2HBfR67oi6QnKHI%2Fuploads%2Fgit-blob-5e936c325dc86688a198720e38c12159d19d7e7a%2F09_sharedStateClass_2x.png?alt=media)
 
 ### 정의
@@ -48,7 +54,7 @@
 
 ```
 
-### 상속
+### 상속, override
 ``` Swift
 
 ```
@@ -65,11 +71,13 @@
 
 ---
 ## Designated init, convenience init, super.init, required init
+### Designated init, convenience init
 ``` Swift
 
 ```
 ![convenience](https://95735008-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F-M7Zt2HBfR67oi6QnKHI%2Fuploads%2Fgit-blob-0f26e6fac68467d7491b6001fc928a9bb821887a%2F14_initializersExample01_2x.png?alt=media)
 
+### super.init
 ``` Swift
 
 ```
@@ -80,6 +88,8 @@
 ```
 ![last](https://95735008-files.gitbook.io/~/files/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F-M7Zt2HBfR67oi6QnKHI%2Fuploads%2Fgit-blob-6e3e3370c638ac7bf4f565f5d1261248cb0c85b1%2F14_initializersExample03_2x.png?alt=media)
 
+
+### required init
 ``` Swift
 
 ```
