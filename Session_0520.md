@@ -93,3 +93,8 @@
 ``` Swift
 
 ```
+
+## deinit
+``` Swift
+
+```
