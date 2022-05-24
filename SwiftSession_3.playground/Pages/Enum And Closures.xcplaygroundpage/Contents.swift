@@ -56,11 +56,11 @@ class Address {
 
 let rey = Person()
 
-// subscript랑 rooms가 옵셔널일때 ? 파티가 벌어진다.
-// rey.residence?[3]?.name
-
 // residence 값이 nil인 상태에서 강제 언래핑(!) 했기 때문에 런타입 에러가 발생한다.
 // let roomCount = rey.residence!.numberOfRooms
+
+// subscript랑 rooms가 옵셔널일때 ? 파티가 벌어진다.
+// rey.residence?[3]?.name
 
 // 결과 확인하려면 Residence Class 주석 수정 필요
 // 마찬가지로 residence 값이 nil이라 저장연산이 실패한다(런타임, 컴파일 에러가 아님)
@@ -71,10 +71,16 @@ let rey = Person()
  ---
 ### 옵셔널 체이닝
 */
-
+func printNumberOfRooms(person: Person) {
+    if let roomCount = person.residence?.numberOfRooms {
+        print("roomCount 값: \(roomCount)")
+    } else {
+        print("옵셔널 체이닝 결과 nil")
+    }
+}
 
 // residence의 값이 nil이기 때문에 첫번째 분기로 print
-//printNumberOfRooms(person: rey)
+printNumberOfRooms(person: rey)
 // residence에 값 저장
 //rey.residence = Residence()
 // residence의 값이 있기 때문에 두번째 분기로 print
@@ -90,6 +96,8 @@ func createAddress() -> Address {
     return someAddress
 }
 let someAddress = Address()
+
+
 /*:
 = 연산도 무언가를 반환한다??
  
@@ -100,7 +108,12 @@ let someAddress = Address()
 residence가 nil이기 때문에 옵셔널 체이닝에 의해 address에 값 저장 실패 -> nil이 반환된다.
 */
 
-
+// if ((rey.residence?.address = someAddress) != nil) {
+if ((rey.residence?.address = createAddress()) != nil) {
+    print("address 값 저장 성공!")
+} else {
+    print("address 값 저장 실패!")
+}
 
 /*:
  ---
@@ -110,8 +123,11 @@ residence가 nil이기 때문에 옵셔널 체이닝에 의해 address에 값 �
  
 표현식의 반환값을 보면 옵셔널이 언래핑된다!
 */
+print(rey.residence?.address?.buildingName)
+type(of: rey.residence?.address?.buildingName) // Optional<String>
 
-
+print(rey.residence?.address?.buildingName ?? "포항공과대학교 C5")
+type(of: rey.residence?.address?.buildingName ?? "포항공과대학교 C5") // String
 
 /*:
  ---
@@ -151,7 +167,7 @@ let library = [
  ---
 ### 상속된 Class의 타입 추론
 */
-
+library.self // [MediaItem]으로 타입추론 되었다.
 
 /*:
 ### 타입 검사(is)
@@ -159,16 +175,29 @@ let library = [
 var movieCount = 0
 var songCount = 0
 
-
-
+for item in library {
+    if item is Movie { // Movie 타입인지 검사
+        movieCount += 1
+    } else if item is Song { // Song 타입인지 검사
+        songCount += 1
+    }
+}
 print("Movie \(movieCount)개, Song \(songCount)개")
+
 /*:
 ### 다운 캐스팅(Downcasting)
  
 library의 타입은 [MediaItem]인 상황이다.
 */
-
-
+(library[0] as? Movie).self
+(library[3] as? Movie).self
+for item in library {
+    if let movie = (item as? Movie) { // item이 Movie로서 저장이 되는가?
+        print("Movie: \(movie.name), dir. \(movie.director)")
+    } else if let song = (item as? Song) { // item이 Song으로서 저장이 되는가?
+        print("Song: \(song.name), by \(song.artist)")
+    }
+}
 
 /*:
 MediaItem이 MediaItem을 상속 받은 하위 클래스로 타입 캐스팅되었기 떄문에 다운 캐스팅
@@ -183,8 +212,8 @@ MediaItem이 MediaItem을 상속 받은 하위 클래스로 타입 캐스팅되�
 업캐스팅은 항상 성공한다.
 */
 let movie = Movie(name: "Casablanca", director: "Michael Curtiz")
-
-
+(movie as MediaItem).self
+(movie as MediaItem).name
 
 /*:
  ---
@@ -198,7 +227,7 @@ enum CompassPoint {
     case west
 }
 
-enum Planet { // : CaseIterable {
+enum Planet: CaseIterable {
     case mercury, venus, earth, mars, jupiter, saturn, uranus, neptune
 }
 
@@ -206,22 +235,43 @@ enum Planet { // : CaseIterable {
  ---
 ### 열거형의 사용
 */
-
-
+var directionToHead = CompassPoint.south
+directionToHead.self // 열거형도 하나의 타입이 된다.
 
 /*:
 ### 열거형 값 비교
 */
+directionToHead = .west
+switch directionToHead {
+case .north:
+    print("북쪽")
+case .south:
+    print("남쪽")
+case .east:
+    print("동쪽")
+case .west:
+    print("서쪽하늘은 좋은 노래")
+}
 
-
+// east, west case가 고려되지 않았기 때문에 실행불가
+// default 추가를 통해 실행 가능
+//switch directionToHead {
+//case .north:
+//    print("북쪽")
+//case .south:
+//    print("남쪽")
+//default:
+//    print("나머지")
+//}
 
 /*:
 ### 열거형 리터럴
 CaseIterable 프로토콜을 통해 채택하여, case의 개수를 가져오거나, 반복이 가능하다.
 */
-
-
-
+let numberOfPlanet = Planet.allCases.count
+for beverage in Planet.allCases {
+    print(beverage)
+}
 /*:
 ### 연관된 값(Associated Values)
 이렇게 쓰인다 정도로 이해!
@@ -258,12 +308,28 @@ enum Planet_Int: Int {
     case mercury = 1, venus, earth, mars, jupiter, saturn, uranus, neptune
 }
 // earth의 값은?
+Planet_Int.earth.rawValue
 
 enum CompassPoint_String: String {
     case north, south, east, west
 }
 // south의 값은?
+CompassPoint_String.south.rawValue
 
+let possiblePlanet = Planet_Int(rawValue: 7)
+possiblePlanet
+
+let positionToFind = 11
+if let somePlanet = Planet_Int(rawValue: positionToFind) {
+    switch somePlanet {
+    case .earth:
+        print("지구!")
+    default:
+        print("지구는 아니지만 암튼 Planet")
+    }
+} else {
+    print("Planet이 아닌 무언가?")
+}
 
 /*:
 ### 재귀 열거형(Recursive Enumerations)
@@ -278,7 +344,6 @@ enum ArithmeticExpression {
     indirect case multiplication(ArithmeticExpression, ArithmeticExpression)
 }
 // 또는
-
 //indirect enum ArithmeticExpression {
 //    case number(Int)
 //    case addition(ArithmeticExpression, ArithmeticExpression)
@@ -311,7 +376,24 @@ print(evaluate(product))
 
 enum AppStorageKey: String {
     case firstUser, popUpClose, token
+    
+    var title: String {
+        switch self {
+        case .firstUser:
+            return "FIRST_USER"
+        case .popUpClose:
+            return "POPUP_CLOSE"
+        case .token:
+            return "TOKEN_KEY"
+        }
+    }
+    
+    func returnKeyLength(enumCase: AppStorageKey) -> Int {
+        return enumCase.title.count
+    }
 }
+
+AppStorageKey.token.returnKeyLength(enumCase: .token)
 
 /*:
  ### 열거형을 쓰는 이유
@@ -329,9 +411,10 @@ enum AppStorageKey: String {
  ```
 */
 // 클로저의 타입은 파라미터와 리턴 타입으로 표현된다.
-let sumClosures: (Int, Int) -> Int
-
-
+let sumClosures: (Int, Int) -> Int = { x, y in
+    return x + y
+}
+let sumResult = sumClosures(4,5) // 9
 /*:
  ### 클로저의 축약
 */
@@ -353,28 +436,25 @@ var reversedNames = names.sorted(by: backward)
  
  함수 인자를 클로저로 변환
 */
-
-
+reversedNames = names.sorted(by: { (s1: String, s2: String) -> Bool in
+    return s1 > s2
+})
 /*:
 타입 유추
 */
-
-
+reversedNames = names.sorted(by: { s1, s2 in return s1 > s2 } )
 /*:
 단일 표현 클로저의 임시적 변환
 */
-
-
+reversedNames = names.sorted(by: { s1, s2 in s1 > s2 } )
 /*:
 짧은 인자 이름
 */
-
-
+reversedNames = names.sorted(by: { $0 > $1 } )
 /*:
 연산자 메서드
 */
-
-
+reversedNames = names.sorted(by: >)
 /*:
 ### 후행 클로저
 클로저를 인자로 받는 함수
@@ -383,16 +463,23 @@ func someFunctionThatTakesAClosure(closure: () -> Void) {
     // function body goes here
 }
 
+someFunctionThatTakesAClosure(closure: {
+    
+})
 
 /*:
 인자라벨 생략
 */
-
+someFunctionThatTakesAClosure() {
+    
+}
 
 /*:
 클로저가 함수의 유일한 인자일 경우 소괄호까지 생략이 가능하다.
 */
-
+someFunctionThatTakesAClosure {
+    
+}
 
 /*:
 ### 다시보자 SwiftUI
@@ -403,13 +490,25 @@ func someFunctionThatTakesAClosure(closure: () -> Void) {
  Button
 */
 var buttonToggle = true
+Button(action: {
+    buttonToggle.toggle()
+}, label: {
+    Text("Button")
+})
 
+Button {
+    buttonToggle.toggle()
+} label: {
+    Text("Button")
+}
 
 /*:
 NavigationLink
 */
-
-
+NavigationLink("다음페이지", destination: Text("destination 라벨"))
+NavigationLink("다음페이지") {
+    Text("후행 클로저 라벨 생략")
+}
 
 /*:
 ### 값 캡쳐
@@ -450,9 +549,16 @@ var completionHandlers: [() -> Void] = []
 func someFunctionWithEscapingClosure(completionHandler: @escaping () -> Void) {
     completionHandlers.append(completionHandler)
 }
+someFunctionWithEscapingClosure {
+    print("escaping closure")
+}
+completionHandlers.first?()
 
-// 파라미터가 있는 경우
 var intCompletionHandlers: [(Int) -> Void] = []
 func someFunctionWithEscapingClosureInt(completionHandler: @escaping (Int) -> Void) {
     intCompletionHandlers.append(completionHandler)
 }
+someFunctionWithEscapingClosureInt { num in
+    print("num escaping closure \(num)")
+}
+intCompletionHandlers.first?(5)
