@@ -527,7 +527,7 @@ incrementByTen()
 incrementByTen()
 incrementByTen()
 /*:
-![Recursive Enumerations](indirectEnum.png)
+![captureValue](captureValue.png)
 */
 let incrementBySeven = makeIncrementer(forIncrement: 7)
 incrementBySeven()
