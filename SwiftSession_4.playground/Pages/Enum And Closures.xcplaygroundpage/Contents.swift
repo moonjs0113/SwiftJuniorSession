@@ -13,19 +13,15 @@ var completionHandlers: [() -> Void] = []
 func someFunctionWithEscapingClosure(completionHandler: @escaping () -> Void) {
     completionHandlers.append(completionHandler)
 }
-someFunctionWithEscapingClosure( completionHandler: {
-    print("escaping Closure")
-})
 
 someFunctionWithEscapingClosure {
-    print("escaping Closure")
+    print("escaping closure")
 }
-
 /*:
  ![escapingClosures](escapingClosures.png)
  */
 
-//completionHandlers.first?()
+completionHandlers.first?()
 
 /*:
  ![closureCall](closureCall.png)
@@ -40,8 +36,7 @@ func someFunctionWithEscapingClosureInt(completionHandler: @escaping (Int) -> Vo
 someFunctionWithEscapingClosureInt { num in
     print("num escaping closure \(num)")
 }
-
-// intCompletionHandlers.first?(5)
+intCompletionHandlers.first?(5)
 /*:
  # Extension
  - 계산된 인스턴스 프로퍼티와 계산된 타입 프로퍼티 추가
@@ -71,8 +66,7 @@ extension SomeType {
         self.init()
     }
 }
-let some = SomeType()
-let some2 = SomeType(string: "Hello")
+
 /*:
  ---
  
@@ -96,7 +90,7 @@ extension Int {
     }
 }
 
-234235545.won
+2348172356823.won
 
 /*:
  ---
@@ -126,7 +120,7 @@ extension String {
     }
 }
 
-"#FFFF00".toColor(alpha: 1)
+"#FF0000".toColor(alpha: 1)
 
 /*:
  ---
@@ -158,7 +152,8 @@ extension Int {
     }
 }
 
-12345678[2]
+1357924680[2]
+
 
 /*:
  ---
@@ -170,7 +165,7 @@ extension Int {
     enum Kind {
         case negative, zero, positive
     }
-    var kind: Kind {4
+    var kind: Kind {
         switch self {
         case 0:
             return .zero
@@ -182,7 +177,8 @@ extension Int {
     }
 }
 
-(32512).kind
+(-124).kind
+
 
 /*:
  # Protocol
@@ -192,7 +188,9 @@ extension Int {
 
 // 클래스와 구조체의 선언이 제품에 대한 설계도라면, 프로토콜은 요구명세서
 
-// Code
+//protocol SomeProtocol {
+//
+//}
 
 /*:
  ---
@@ -225,9 +223,17 @@ struct Person: SomeProtocol {
 
 var person = Person(printLine: "\(#line)")
 
+//var person = Person(printLine: "\(#line)", getRequirement: 5)
 person.printLine
- person.getRequirement
+person.getRequirement
 
+person.printLine = "\(#file)"
+//person.getRequirement = 10
+
+person.printLine
+person.getRequirement
+
+person.someTypeMethod()
 
 /*:
  ---
@@ -297,10 +303,10 @@ class Dice {
 // generator의 타입이 프로토콜이기 때문에
 // 해당 프로토콜을 채택하는 값 또는 객체가 오면 된다.
 let dice = Dice(sides: 6, generator: generator)
-let diceStruct = Dice(sides: 6, generator: structGenerator)
+let structDice = Dice(sides: 6, generator: structGenerator)
 
 dice.roll()
-diceStruct.roll()
+structDice.roll()
 
 /*:
  ---
@@ -376,20 +382,17 @@ class DiceGameTracker: DiceGameDelegate {
 
 let tracker = DiceGameTracker()
 let game = SnakesAndLadders()
-
 /*:
  ![init](init.png)
  */
 
 // DiceGameDelegate Protocol을 채택하는 객채를 받음
 game.delegate = tracker
-
 /*:
  ![delegate](delegate.png)
  */
 
 game.play()
-
 /*:
  ![delegateFunc](delegateFunc.png)
 
@@ -410,16 +413,14 @@ extension Dice: TextRepresentable {
 
 let textualDice = Dice(sides: 12, generator: LinearCongruentialGenerator())
 print(textualDice.textualDescription)
-dice.textualDescription
-
+ dice.textualDescription
 
 extension SnakesAndLadders: TextRepresentable {
     var textualDescription: String {
         return "A game of Snakes and Ladders with \(finalSquare) squares"
     }
 }
-
- game.textualDescription
+game.textualDescription
 
 /*:
  ---
@@ -435,15 +436,13 @@ extension Array: TextRepresentable where Element: TextRepresentable {
         return "[" + itemsAsText.joined(separator: ", ") + "]"
     }
 }
-
 let myDice = [dice, textualDice]
 let someArray = [5,0,6]
 
-myDice.textualDescription
-//someArray.text
+// someArray.textualDescription
 // 없어요. 있었는데? 아니 그냥 없어요
 
-// Code
+print(myDice.textualDescription)
 
 /*:
  ---
@@ -461,10 +460,9 @@ struct Hamster {
 
 extension Hamster: TextRepresentable { }
 
-let ironManTheHamster = Hamster(name: "IronMan")
-let somethingTextRepresentable: TextRepresentable = ironManTheHamster
-
-somethingTextRepresentable.textualDescription
+let simonTheHamster = Hamster(name: "IronMan")
+let somethingTextRepresentable: TextRepresentable = simonTheHamster
+print(somethingTextRepresentable.textualDescription)
 
 /*:
  ---
@@ -484,18 +482,17 @@ struct Vector3D: Equatable {
 // extension Double
 // let double = Double() -> Hashable -> Equatable
 
-//class NotEquatableClass {
-//
-//}
-//let notEquatableClass0 = NotEquatableClass()
-//let notEquatableClass1 = NotEquatableClass()
-//notEquatableClass0 == notEquatableClass1
+class NotEquatableClass {
+    
+}
 
 let twoThreeFour = Vector3D(x: 2.0, y: 3.0, z: 4.0)
 let anotherTwoThreeFour = Vector3D(x: 2.0, y: 3.0, z: 4.0)
 
 // Vector3D 구조체도 == 연산이 가능해진다.
-// Code
+if twoThreeFour == anotherTwoThreeFour {
+    print("These two vectors are also equivalent.")
+}
 
 // 아래도 마찬가지
 enum SkillLevel: Comparable {
@@ -506,11 +503,9 @@ enum SkillLevel: Comparable {
 
 var levels = [SkillLevel.intermediate, SkillLevel.beginner,
               SkillLevel.expert(stars: 5), SkillLevel.expert(stars: 3)]
-
 for level in levels.sorted() {
     print(level)
 }
-
 /*:
  ---
  
@@ -518,9 +513,10 @@ for level in levels.sorted() {
  */
 
 // 같은 프로토콜이 채택되어있기 때문에 가능
-let things: [TextRepresentable] = [game, textualDice, ironManTheHamster]
+let things: [TextRepresentable] = [game, textualDice, simonTheHamster]
 
-// let whatType = [game, ironManTheHamster]
+// let whatType = [game, textualDice, simonTheHamster]
+// 타입 명시 안 하면 에러
 
 for thing in things {
     print(thing.textualDescription)
@@ -612,7 +608,13 @@ var counter = Counter()
 //}
 
 class ThreeSource: CounterDataSource {
-    let fixdIncrement = 3
+    let fixedIncrement = 3
+}
+
+counter.dataSource = ThreeSource()
+for _ in 1...4 {
+    counter.increment()
+    print(counter.count)
 }
 
 /*:
@@ -637,9 +639,8 @@ extension RandomNumberGenerator {
     }
 }
 
- let extensionGenerator = LinearCongruentialGenerator()
+let extensionGenerator = LinearCongruentialGenerator()
 extensionGenerator.randomBool()
-// Code
 
 /*:
  ---
@@ -661,12 +662,12 @@ extension Collection where Element: Equatable {
 
 let equalNumbers = [100, 100, 100, 100, 100]
 let differentNumbers = [100, 100, 200, 100, 200]
-// Code
+equalNumbers.allEqual()
+differentNumbers.allEqual()
 
 // 요소들이 Equatable를 채택하고 있지 않아 allEqual을 못 쓴다.
 let someClass = [SomeClass(someParameter: 3),
                  SomeClass(someParameter: 7),
                  SomeClass(someParameter: 2),
                  SomeClass(someParameter: 123)]
-
-
+//someClass.allEqual()
