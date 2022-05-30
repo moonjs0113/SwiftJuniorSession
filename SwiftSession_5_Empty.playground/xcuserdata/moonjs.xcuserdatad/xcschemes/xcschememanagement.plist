@@ -46,21 +46,21 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
-		<key>SwiftSession_4 (Playground).xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-			<key>orderHint</key>
-			<integer>0</integer>
-		</dict>
-		<key>SwiftSession_4_Me_origin (Playground).xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-			<key>orderHint</key>
-			<integer>0</integer>
-		</dict>
 		<key>SwiftSession_4_origin (Playground).xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+			<key>orderHint</key>
+			<integer>0</integer>
+		</dict>
+		<key>SwiftSession_5_Empty_origin (Playground).xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+			<key>orderHint</key>
+			<integer>0</integer>
+		</dict>
+		<key>SwiftSession_5_origin (Playground).xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
