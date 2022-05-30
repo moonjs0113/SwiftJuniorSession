@@ -68,7 +68,8 @@ struct IntStack {
  ![Stack_Pushed_Four_Strings](Stack_Pushed_Four_Strings.png)
  */
 
-//let fromTheTop = stackOfStrings.pop()
+
+
 /*:
  ![Stack_Poped_One_String](Stack_Poped_One_String.png)
  */
