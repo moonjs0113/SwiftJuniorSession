@@ -57,7 +57,6 @@ let square: Square = Square(size: 6)
  ---
  ## vs Generics
  */
-
 // 제네릭 where -> 어떠한 프로토콜을 준수하는 파라미터를 받는다.
 // 불투명한 타입 some -> 어떠한 프로토콜을 준수하는 값을 반환한다.
 func makeTrapezoid() -> Shape {
@@ -75,6 +74,10 @@ func makeTrapezoid() -> Shape {
 let trapezoid = makeTrapezoid()
 trapezoid.self
 
+/*:
+ ---
+ ## vs Return Protocol Type
+ */
 // 프로토콜 타입으로 반환하는 꼴
 // 따라서 해당 함수의 재사용이 불가능해진다.
 // protoFlip의 제네릭 T는 Shape프토로콜을 준수하는 인자를 받는 것이지, Shape 타입을 받는게 아니기 때문이다.
