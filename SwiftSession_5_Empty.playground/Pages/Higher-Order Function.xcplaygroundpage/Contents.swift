@@ -6,6 +6,17 @@ import Foundation
 [swift.org](https://swift.org)
 */
 let array: [Int] = [10,4,4,2,31,5,6,6,13,43,24,123,4123,1253,5]
+/*:
+ ![forEach](forEach.png)
+ [Array forEach](https://developer.apple.com/documentation/swift/array/1689783-foreach)
+ ---
+ ![SwiftUIForEach](SwiftUIForEach.png)
+ [SwiftUIForEach](https://developer.apple.com/documentation/swiftui/foreach)
+ */
+
+// SwiftUI ForEach 아님!
+
+//Code
 
 /*:
  ---
