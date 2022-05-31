@@ -14,28 +14,42 @@ import Foundation
 */
 
 // Int 데이터의 Swap 함수
-//func swapTwoInts() {
-    // Code
-//}
-//var firstInt = 1
-//var secondInt = 13
-//print("firstInt: \(firstInt), secondInt: \(secondInt)")
-//swapTwoInts(&firstInt, &secondInt)
-//print("firstInt: \(firstInt), secondInt: \(secondInt)")
+func swapTwoInts(_ a: inout Int, _ b: inout Int) {
+    let temporaryA = a
+    a = b
+    b = temporaryA
+}
+var firstInt = 1
+var secondInt = 13
+print("firstInt: \(firstInt), secondInt: \(secondInt)")
+swapTwoInts(&firstInt, &secondInt)
+print("firstInt: \(firstInt), secondInt: \(secondInt)")
 
 // 만약 Int 말고 String이나 Double 타입의 값을 Swap하고 싶다면,
 // 더 나아가 직접 선언한 구조체나 클래스의 값을 Swap하고 싶다면!
+func swapTwoStrings(_ a: inout String, _ b: inout String) {
+    let temporaryA = a
+    a = b
+    b = temporaryA
+}
 
-//Cdoe
-
+func swapTwoDoubles(_ a: inout Double, _ b: inout Double) {
+    let temporaryA = a
+    a = b
+    b = temporaryA
+}
 // 계속 함수를 만들어야한다...
 
 // 이럴 때, Generic 함수를 만들어 사용하자!
-
+func swapTwoValues<T>(_ a: inout T, _ b: inout T) {
+    let temporaryA = a
+    a = b
+    b = temporaryA
+}
 // T -> 타입 파라미터 (Type Parameters)의 T
 // T가 아니라 다른문자도 가능
-//swapTwoValues(&firstInt, &secondInt)
-//print("firstInt: \(firstInt), secondInt: \(secondInt)")
+swapTwoValues(&firstInt, &secondInt)
+print("firstInt: \(firstInt), secondInt: \(secondInt)")
 
 // Array를 들여다보자.
 // Array
@@ -57,19 +71,29 @@ struct IntStack {
 }
 
 // 모든 타입이 가능한 Stack
-// Code
+struct Stack<Element> {
+    var items: [Element] = []
+    mutating func push(_ item: Element) {
+        self.items.append(item)
+        self.printItems()
+    }
+    mutating func pop() -> Element {
+        let popElement = self.items.removeLast()
+        self.printItems()
+        return popElement
+    }
+}
 
-//var stackOfStrings = Stack<String>()
-//stackOfStrings.push("uno")
-//stackOfStrings.push("dos")
-//stackOfStrings.push("tres")
-//stackOfStrings.push("cuatro")
+var stackOfStrings = Stack<String>()
+stackOfStrings.push("uno")
+stackOfStrings.push("dos")
+stackOfStrings.push("tres")
+stackOfStrings.push("cuatro")
 /*:
  ![Stack_Pushed_Four_Strings](Stack_Pushed_Four_Strings.png)
  */
 
-
-
+let fromTheTop = stackOfStrings.pop()
 /*:
  ![Stack_Poped_One_String](Stack_Poped_One_String.png)
  */
@@ -78,14 +102,21 @@ struct IntStack {
  ---
  ## 제너릭 타입 확장 (Extending a Generic Type)
  */
-//extension Stack {
-    // printItems 추가
-    // Code
-//}
+extension Stack {
+    // 위 코드에서 해당 함수 주석을 지웁니다.
+    func printItems() {
+        print(self.items)
+    }
+    
+    var topItem: Element? {
+        self.printItems()
+        return items.isEmpty ? nil : items[items.count - 1]
+    }
+}
 
-//if let topItem = stackOfStrings.topItem {
-//    print("The top item on the stack is \(topItem).")
-//}
+if let topItem = stackOfStrings.topItem {
+    print("The top item on the stack is \(topItem).")
+}
 
 /*:
  ---
@@ -120,6 +151,7 @@ if let foundIndex = findIndex(ofString: "llama", in: strings) {
 
 // 1. 복사해서 Generic으로 바꿔봅니다.
 // 2. Equatable 제약사항을 추가합니다.
+
 /*:
  ---
  ## 연관된 타입 (Associated Types)
@@ -135,13 +167,34 @@ protocol Container {
 }
 
 // IntStack
-//extension IntStack: Container {
-// Code
-//}
+extension IntStack: Container {
+    // Associated Type인 Item의 타입을 지정해준다.
+    typealias Item = Int
+    
+    mutating func append(_ item: Int) {
+        self.push(item)
+    }
+    var count: Int {
+        return items.count
+    }
+    subscript(i: Int) -> Int {
+        return items[i]
+    }
+}
 // 타입 추론으로인해 typealias를 주석처리해도 작동한다.
 
 // Generic Stack
-// Code
+extension Stack: Container {
+    mutating func append(_ item: Element) {
+        self.push(item)
+    }
+    var count: Int {
+        return items.count
+    }
+    subscript(i: Int) -> Element {
+        return items[i]
+    }
+}
 // Generic Type으로 타입 추론이 되었기 때문에
 // 마찬가지로 typealias가 없어도 작동한다.
 
@@ -155,23 +208,22 @@ protocol SuffixableContainer: Container {
     func suffix(_ size: Int) -> Suffix
 }
 
-// Sufiix에 지정될 타입의 Item 과 Item이 같아야한다.
-//extension Stack: SuffixableContainer {
-//    func suffix(_ size: Int) -> Stack {
-//        var result = Stack()
-//        for index in (count-size)..<count {
-//            result.append(self[index])
-//        }
-//        result.printItems()
-//        return result
-//    }
-//}
+extension Stack: SuffixableContainer {
+    func suffix(_ size: Int) -> Stack {
+        var result = Stack()
+        for index in (count-size)..<count {
+            result.append(self[index])
+        }
+        result.printItems()
+        return result
+    }
+}
 
-//var stackOfInts = Stack<Int>()
-//stackOfInts.append(10)
-//stackOfInts.append(20)
-//stackOfInts.append(30)
-//let suffix = stackOfInts.suffix(2)
+var stackOfInts = Stack<Int>()
+stackOfInts.append(10)
+stackOfInts.append(20)
+stackOfInts.append(30)
+let suffix = stackOfInts.suffix(2)
 
 /*:
  ---
@@ -196,14 +248,12 @@ func allItemsMatch<C1: Container, C2: Container>
 
 var arrayOfStrings = ["uno", "dos", "tres"]
 
-// Array가 Container를 채택해야한다.
 extension Array: Container {}
-
-//if allItemsMatch(stackOfStrings, arrayOfStrings) {
-//    print("All items match.")
-//} else {
-//    print("Not all items match.")
-//}
+if allItemsMatch(stackOfStrings, arrayOfStrings) {
+    print("All items match.")
+} else {
+    print("Not all items match.")
+}
 
 /*:
  ---
@@ -216,19 +266,16 @@ extension Container where Item == Double {
         for index in 0..<count {
             sum += self[index]
         }
-        print("extension Container where Item == Double")
         return sum / Double(count)
     }
 }
 print([1260.0, 1200.0, 98.6, 37.0].average())
-
 extension Container {
     func average() -> Double where Item == Int {
         var sum = 0.0
         for index in 0..<count {
             sum += Double(self[index])
         }
-        print("func average() -> Double where Item == Int")
         return sum / Double(count)
     }
     func endsWith(_ item: Item) -> Bool where Item: Equatable {

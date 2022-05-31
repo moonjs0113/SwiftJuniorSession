@@ -11,7 +11,7 @@ enum ExampleError: Error {
     case stringIsNil
 }
 
-func canThrowErrors() throws -> String {
+func canThrowErrors() throws -> String{
     let stringArray: [String] = []
     guard stringArray.first != nil else {
         throw ExampleError.stringIsNil
@@ -19,7 +19,12 @@ func canThrowErrors() throws -> String {
     return "String!!"
 }
 
-// Code
+do {
+    let result = try canThrowErrors()
+    print(result)
+} catch {
+    print(error)
+}
 
 /*:
  ---
@@ -32,13 +37,22 @@ func throwFunctionInParameter(function: () throws -> String) rethrows {
     print(result)
 }
 
-// Code
+do {
+    try throwFunctionInParameter(function: canThrowErrors)
+} catch {
+    print(error)
+}
 
 /*:
  ### rethrows를 안 쓴다면?
 */
 func notUseRethrows(function: () throws -> String) {
-    // Code
+    do {
+        let result = try canThrowErrors()
+        print(result)
+    } catch {
+        print(error)
+    }
 }
 
 notUseRethrows(function: canThrowErrors)

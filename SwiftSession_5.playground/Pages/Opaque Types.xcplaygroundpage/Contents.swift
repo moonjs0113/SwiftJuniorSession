@@ -4,12 +4,10 @@ import Foundation
  [swift.org](https://swift.org)
  ---
  */
-// 준비물
 protocol Shape {
     func draw() -> String
 }
 
-// 별찍기
 struct Triangle: Shape {
     var size: Int
     func draw() -> String {
@@ -21,8 +19,9 @@ struct Triangle: Shape {
     }
 }
 let smallTriangle = Triangle(size: 3)
+smallTriangle.self
+//print(smallTriangle.draw())
 
-// 반대로
 struct FlippedShape<T: Shape>: Shape {
     var shape: T
     func draw() -> String {
@@ -31,8 +30,8 @@ struct FlippedShape<T: Shape>: Shape {
     }
 }
 let flippedTriangle = FlippedShape(shape: smallTriangle)
+//print(flippedTriangle.draw())
 
-// 위아래 합치기
 struct JoinedShape<T: Shape, U: Shape>: Shape {
     var top: T
     var bottom: U
@@ -40,9 +39,10 @@ struct JoinedShape<T: Shape, U: Shape>: Shape {
         return top.draw() + "\n" + bottom.draw()
     }
 }
-let joinedTriangles = JoinedShape(top: smallTriangle, bottom: flippedTriangle)
 
-// 네모네모빔
+let joinedTriangles = JoinedShape(top: smallTriangle, bottom: flippedTriangle)
+print(joinedTriangles.draw())
+
 struct Square: Shape {
     var size: Int
     func draw() -> String {
@@ -51,15 +51,16 @@ struct Square: Shape {
         return result.joined(separator: "\n")
     }
 }
-let square: Square = Square(size: 6)
+print(Square(size: 4).draw())
 
 /*:
  ---
  ## vs Generics
  */
+
 // 제네릭 where -> 어떠한 프로토콜을 준수하는 파라미터를 받는다.
 // 불투명한 타입 some -> 어떠한 프로토콜을 준수하는 값을 반환한다.
-func makeTrapezoid() -> Shape {
+func makeTrapezoid() -> some Shape {
     let top = Triangle(size: 2)
     let middle = Square(size: 2)
     let bottom = FlippedShape(shape: top)
@@ -67,17 +68,13 @@ func makeTrapezoid() -> Shape {
         top: top,
         bottom: JoinedShape(top: middle, bottom: bottom)
     )
-    trapezoid.self
+//    trapezoid
     return trapezoid
 }
 
 let trapezoid = makeTrapezoid()
 trapezoid.self
 
-/*:
- ---
- ## vs Return Protocol Type
- */
 // 프로토콜 타입으로 반환하는 꼴
 // 따라서 해당 함수의 재사용이 불가능해진다.
 // protoFlip의 제네릭 T는 Shape프토로콜을 준수하는 인자를 받는 것이지, Shape 타입을 받는게 아니기 때문이다.
@@ -89,10 +86,27 @@ func protoFlip<T: Shape>(_ shape: T) -> Shape {
     return FlippedShape(shape: shape)
 }
 
-// Code
+// 모든 분기의 리턴 타입은 같아야한다.
+func protoFlipSome<T: Shape>(_ shape: T) -> some Shape {
+        if shape is Square {
+            return shape
+        }
+    return FlippedShape(shape: shape)
+}
+
+
 
 let protoFlippedTriangle = protoFlip(smallTriangle)
-// Code
+//protoFlip(protoFlippedTriangle)
+//print(protoFlippedTriangle.draw())
 
-//let someThing = protoFlipSome(smallTriangle)
-// Code
+let someThing = protoFlipSome(smallTriangle)
+protoFlipSome(someThing)
+
+
+//- URLSession으로 데이터 가져오기 & (await / async) //3
+//- Third Party Framework(cocoapods, carthago, SPM) 사용해보기 (How) // 4
+//- SwiftUI Property Wrapper // 1,2
+//- Swift Code 작성법 // 2,1
+//
+//- UIKit 기초
