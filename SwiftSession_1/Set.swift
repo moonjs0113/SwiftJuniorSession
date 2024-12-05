@@ -4,6 +4,10 @@ import Foundation
 let set: Set<Int> = [1,2,1,6,3,2,1,3,4,5,5,5,6]
 let IamNotSet = [1,6,2,3,4,4,5,6]
 let realSet: Set = [1,2,3,4,5,6]
+
+// 중복 요소는 제거됨
+print(set) // [4, 2, 6, 3, 1, 5]
+
 // 순서, 중복 없음
 
 type(of: IamNotSet)
