@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<playground version='6.0' target-platform='ios' display-mode='rendered' buildActiveScheme='true' importAppTypes='true'>
+    <pages>
+        <page name='Intro'/>
+        <page name='Int'/>
+        <page name='Bool'/>
+        <page name='Float'/>
+        <page name='String'/>
+        <page name='Any'/>
+        <page name='Tuple'/>
+        <page name='Array'/>
+        <page name='Dictionary'/>
+        <page name='Set'/>
+        <page name='Conditional'/>
+        <page name='Loop'/>
+        <page name='Function'/>
+        <page name='Optional'/>
+        <page name='End'/>
+    </pages>
+</playground>

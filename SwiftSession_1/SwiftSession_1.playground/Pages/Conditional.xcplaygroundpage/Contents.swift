@@ -1,17 +1,20 @@
-import Foundation
-
+//: [Previous](@previous)
+//: # Contional - if, if-else, switch-case
+//: ## if
 let int3 = 3
 
 if 5 > int3 {
     print("OK")
 }
 
+//: ## if-else
 if 5 > int3 {
     print("OK")
 } else {
     print("NO")
 }
 
+//: ## if-else 중첩
 if 2 > int3 {
     print("if 2")
 } else if 5 > int3{
@@ -32,7 +35,7 @@ if 100 > int51, 40 < int51 {
     print("100 > int3, 40 < int3")
 }
 
-// Switch
+//: ## Switch
 let switchValue = 0
 switch switchValue {
 case ..<4 :
@@ -48,5 +51,7 @@ default:
     print("switch default")
 }
 
-// 삼항 조건
+//: ## 삼항 조건자
 (100 > int51) ? print("100보다 작아요.") : print("100보다 같거나 커요.")
+
+//: [Loop](@next)
